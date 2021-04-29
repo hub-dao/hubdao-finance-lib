@@ -4,8 +4,8 @@ import {solidity, MockProvider, deployContract} from 'ethereum-waffle'
 
 import TransferHelperTest from '../build/TransferHelperTest.json'
 import FakeFallback from '../build/TransferHelperTestFakeFallback.json'
-import FakeBEP20Noncompliant from '../build/TransferHelperTestFakeBEP20Noncompliant.json'
-import FakeBEP20Compliant from '../build/TransferHelperTestFakeBEP20Compliant.json'
+import FakeHRC20Noncompliant from '../build/TransferHelperTestFakeHRC20Noncompliant.json'
+import FakeHRC20Compliant from '../build/TransferHelperTestFakeHRC20Compliant.json'
 
 chai.use(solidity)
 
@@ -30,8 +30,8 @@ describe('TransferHelper', () => {
   before(async () => {
     transferHelper = await deployContract(wallet, TransferHelperTest, [], overrides)
     fakeFallback = await deployContract(wallet, FakeFallback, [], overrides)
-    fakeNoncompliant = await deployContract(wallet, FakeBEP20Noncompliant, [], overrides)
-    fakeCompliant = await deployContract(wallet, FakeBEP20Compliant, [], overrides)
+    fakeNoncompliant = await deployContract(wallet, FakeHRC20Noncompliant, [], overrides)
+    fakeCompliant = await deployContract(wallet, FakeHRC20Compliant, [], overrides)
   })
 
   // sets up the fixtures for each token situation that should be tested
@@ -83,15 +83,15 @@ describe('TransferHelper', () => {
     })
   })
 
-  describe('#safeTransferBNB', () => {
+  describe('#safeTransferHT', () => {
     it('succeeds call not reverted', async () => {
       await fakeFallback.setup(false)
-      await transferHelper.safeTransferBNB(fakeFallback.address, 0)
+      await transferHelper.safeTransferHT(fakeFallback.address, 0)
     })
     it('fails if call reverts', async () => {
       await fakeFallback.setup(true)
-      await expect(transferHelper.safeTransferBNB(fakeFallback.address, 0)).to.be.revertedWith(
-        'TransferHelper: BNB_TRANSFER_FAILED'
+      await expect(transferHelper.safeTransferHT(fakeFallback.address, 0)).to.be.revertedWith(
+        'TransferHelper: HT_TRANSFER_FAILED'
       )
     })
   })

@@ -4,24 +4,24 @@ pragma solidity >=0.4.0;
 
 import '../../access/Ownable.sol';
 import '../../GSN/Context.sol';
-import './IBEP20.sol';
+import './IHRC20.sol';
 import '../../math/SafeMath.sol';
 import '../../utils/Address.sol';
 
 /**
- * @dev Implementation of the {IBEP20} interface.
+ * @dev Implementation of the {IHRC20} interface.
  *
  * This implementation is agnostic to the way tokens are created. This means
  * that a supply mechanism has to be added in a derived contract using {_mint}.
- * For a generic mechanism see {BEP20PresetMinterPauser}.
+ * For a generic mechanism see {HRC20PresetMinterPauser}.
  *
  * TIP: For a detailed writeup see our guide
- * https://forum.zeppelin.solutions/t/how-to-implement-BEP20-supply-mechanisms/226[How
+ * https://forum.zeppelin.solutions/t/how-to-implement-erc20-supply-mechanisms/226[How
  * to implement supply mechanisms].
  *
  * We have followed general OpenZeppelin guidelines: functions revert instead
  * of returning `false` on failure. This behavior is nonetheless conventional
- * and does not conflict with the expectations of BEP20 applications.
+ * and does not conflict with the expectations of HRC20 applications.
  *
  * Additionally, an {Approval} event is emitted on calls to {transferFrom}.
  * This allows applications to reconstruct the allowance for all accounts just
@@ -30,9 +30,9 @@ import '../../utils/Address.sol';
  *
  * Finally, the non-standard {decreaseAllowance} and {increaseAllowance}
  * functions have been added to mitigate the well-known issues around setting
- * allowances. See {IBEP20-approve}.
+ * allowances. See {IHRC20-approve}.
  */
-contract BEP20 is Context, IBEP20, Ownable {
+contract HRC20 is Context, IHRC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
 
@@ -90,21 +90,21 @@ contract BEP20 is Context, IBEP20, Ownable {
     }
 
     /**
-     * @dev See {BEP20-totalSupply}.
+     * @dev See {HRC20-totalSupply}.
      */
     function totalSupply() public override view returns (uint256) {
         return _totalSupply;
     }
 
     /**
-     * @dev See {BEP20-balanceOf}.
+     * @dev See {HRC20-balanceOf}.
      */
     function balanceOf(address account) public override view returns (uint256) {
         return _balances[account];
     }
 
     /**
-     * @dev See {BEP20-transfer}.
+     * @dev See {HRC20-transfer}.
      *
      * Requirements:
      *
@@ -117,14 +117,14 @@ contract BEP20 is Context, IBEP20, Ownable {
     }
 
     /**
-     * @dev See {BEP20-allowance}.
+     * @dev See {HRC20-allowance}.
      */
     function allowance(address owner, address spender) public override view returns (uint256) {
         return _allowances[owner][spender];
     }
 
     /**
-     * @dev See {BEP20-approve}.
+     * @dev See {HRC20-approve}.
      *
      * Requirements:
      *
@@ -136,10 +136,10 @@ contract BEP20 is Context, IBEP20, Ownable {
     }
 
     /**
-     * @dev See {BEP20-transferFrom}.
+     * @dev See {HRC20-transferFrom}.
      *
      * Emits an {Approval} event indicating the updated allowance. This is not
-     * required by the EIP. See the note at the beginning of {BEP20};
+     * required by the EIP. See the note at the beginning of {HRC20};
      *
      * Requirements:
      * - `sender` and `recipient` cannot be the zero address.
@@ -156,7 +156,7 @@ contract BEP20 is Context, IBEP20, Ownable {
         _approve(
             sender,
             _msgSender(),
-            _allowances[sender][_msgSender()].sub(amount, 'BEP20: transfer amount exceeds allowance')
+            _allowances[sender][_msgSender()].sub(amount, 'HRC20: transfer amount exceeds allowance')
         );
         return true;
     }
@@ -165,7 +165,7 @@ contract BEP20 is Context, IBEP20, Ownable {
      * @dev Atomically increases the allowance granted to `spender` by the caller.
      *
      * This is an alternative to {approve} that can be used as a mitigation for
-     * problems described in {BEP20-approve}.
+     * problems described in {HRC20-approve}.
      *
      * Emits an {Approval} event indicating the updated allowance.
      *
@@ -182,7 +182,7 @@ contract BEP20 is Context, IBEP20, Ownable {
      * @dev Atomically decreases the allowance granted to `spender` by the caller.
      *
      * This is an alternative to {approve} that can be used as a mitigation for
-     * problems described in {BEP20-approve}.
+     * problems described in {HRC20-approve}.
      *
      * Emits an {Approval} event indicating the updated allowance.
      *
@@ -196,7 +196,7 @@ contract BEP20 is Context, IBEP20, Ownable {
         _approve(
             _msgSender(),
             spender,
-            _allowances[_msgSender()][spender].sub(subtractedValue, 'BEP20: decreased allowance below zero')
+            _allowances[_msgSender()][spender].sub(subtractedValue, 'HRC20: decreased allowance below zero')
         );
         return true;
     }
@@ -233,10 +233,10 @@ contract BEP20 is Context, IBEP20, Ownable {
         address recipient,
         uint256 amount
     ) internal {
-        require(sender != address(0), 'BEP20: transfer from the zero address');
-        require(recipient != address(0), 'BEP20: transfer to the zero address');
+        require(sender != address(0), 'HRC20: transfer from the zero address');
+        require(recipient != address(0), 'HRC20: transfer to the zero address');
 
-        _balances[sender] = _balances[sender].sub(amount, 'BEP20: transfer amount exceeds balance');
+        _balances[sender] = _balances[sender].sub(amount, 'HRC20: transfer amount exceeds balance');
         _balances[recipient] = _balances[recipient].add(amount);
         emit Transfer(sender, recipient, amount);
     }
@@ -251,7 +251,7 @@ contract BEP20 is Context, IBEP20, Ownable {
      * - `to` cannot be the zero address.
      */
     function _mint(address account, uint256 amount) internal {
-        require(account != address(0), 'BEP20: mint to the zero address');
+        require(account != address(0), 'HRC20: mint to the zero address');
 
         _totalSupply = _totalSupply.add(amount);
         _balances[account] = _balances[account].add(amount);
@@ -270,9 +270,9 @@ contract BEP20 is Context, IBEP20, Ownable {
      * - `account` must have at least `amount` tokens.
      */
     function _burn(address account, uint256 amount) internal {
-        require(account != address(0), 'BEP20: burn from the zero address');
+        require(account != address(0), 'HRC20: burn from the zero address');
 
-        _balances[account] = _balances[account].sub(amount, 'BEP20: burn amount exceeds balance');
+        _balances[account] = _balances[account].sub(amount, 'HRC20: burn amount exceeds balance');
         _totalSupply = _totalSupply.sub(amount);
         emit Transfer(account, address(0), amount);
     }
@@ -295,8 +295,8 @@ contract BEP20 is Context, IBEP20, Ownable {
         address spender,
         uint256 amount
     ) internal {
-        require(owner != address(0), 'BEP20: approve from the zero address');
-        require(spender != address(0), 'BEP20: approve to the zero address');
+        require(owner != address(0), 'HRC20: approve from the zero address');
+        require(spender != address(0), 'HRC20: approve to the zero address');
 
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
@@ -313,7 +313,7 @@ contract BEP20 is Context, IBEP20, Ownable {
         _approve(
             account,
             _msgSender(),
-            _allowances[account][_msgSender()].sub(amount, 'BEP20: burn amount exceeds allowance')
+            _allowances[account][_msgSender()].sub(amount, 'HRC20: burn amount exceeds allowance')
         );
     }
 }

@@ -31,13 +31,13 @@ contract TransferHelperTest {
         TransferHelper.safeTransferFrom(token, from, to, value);
     }
 
-    function safeTransferBNB(address to, uint256 value) external {
-        TransferHelper.safeTransferBNB(to, value);
+    function safeTransferHT(address to, uint256 value) external {
+        TransferHelper.safeTransferHT(to, value);
     }
 }
 
 // can revert on failure and returns true if successful
-contract TransferHelperTestFakeBEP20Compliant {
+contract TransferHelperTestFakeHRC20Compliant {
     bool public success;
     bool public shouldRevert;
 
@@ -67,7 +67,7 @@ contract TransferHelperTestFakeBEP20Compliant {
 }
 
 // only reverts on failure, no return value
-contract TransferHelperTestFakeBEP20Noncompliant {
+contract TransferHelperTestFakeHRC20Noncompliant {
     bool public shouldRevert;
 
     function setup(bool shouldRevert_) public {

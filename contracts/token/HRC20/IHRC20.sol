@@ -2,7 +2,7 @@
 
 pragma solidity >=0.4.0;
 
-interface IBEP20 {
+interface IHRC20 {
     /**
      * @dev Returns the amount of tokens in existence.
      */
@@ -24,7 +24,7 @@ interface IBEP20 {
     function name() external view returns (string memory);
 
     /**
-     * @dev Returns the bep token owner.
+     * @dev Returns the hrc token owner.
      */
     function getOwner() external view returns (address);
 
